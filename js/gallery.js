@@ -63,7 +63,9 @@ const images = [
     description: "Lighthouse Coast Sea",
   },
 ];
+
 const gallery = document.querySelector(".gallery");
+
 const galleryItems = images.map(({ preview, original, description }) => {
   const listItem = document.createElement("li");
   listItem.classList.add("gallery-item");
@@ -76,34 +78,39 @@ const galleryItems = images.map(({ preview, original, description }) => {
   image.classList.add("gallery-image");
   image.src = preview;
   image.dataset.source = original;
-  image.alt = description;
 
   link.appendChild(image);
   listItem.appendChild(link);
 
   return listItem;
 });
+
 gallery.append(...galleryItems);
+
+let instance = null;
+let escapeKeyListener = null;
+
 gallery.addEventListener("click", (event) => {
   event.preventDefault();
+
   if (event.target.classList.contains("gallery-image")) {
     const largeImageUrl = event.target.dataset.source;
-    console.log(largeImageUrl);
     const description = event.target.alt;
-    const instance = basicLightbox.create(
-      `<img class="modal-image" src="" alt="">`,
+
+    instance = basicLightbox.create(
+      `<img class="modal-image" src="${largeImageUrl}" alt="${description}">`,
       {
         onShow: (instance) => {
-          const modalImage = instance.element().querySelector(".modal-image");
-          if (modalImage) {
-            modalImage.src = largeImageUrl;
-            modalImage.alt = description;
-          }
-          document.addEventListener("keydown", (event) => {
+          escapeKeyListener = (event) => {
             if (event.key === "Escape") {
               instance.close();
             }
-          });
+          };
+          document.addEventListener("keydown", escapeKeyListener);
+        },
+        onClose: () => {
+          document.removeEventListener("keydown", escapeKeyListener);
+          escapeKeyListener = null;
         },
       }
     );
