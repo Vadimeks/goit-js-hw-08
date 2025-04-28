@@ -89,5 +89,20 @@ gallery.addEventListener("click", (event) => {
   if (event.target.classList.contains("gallery-image")) {
     const largeImageUrl = event.target.dataset.source;
     console.log(largeImageUrl);
+    const description = event.target.alt;
+    const instance = basicLightbox.create(
+      `<img src="${largeImageUrl}" alt="${description}">`,
+      {
+        onShow: (instance) => {
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+              instance.close();
+            }
+          });
+        },
+      }
+    );
+
+    instance.show();
   }
 });
