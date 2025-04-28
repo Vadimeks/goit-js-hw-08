@@ -91,9 +91,14 @@ gallery.addEventListener("click", (event) => {
     console.log(largeImageUrl);
     const description = event.target.alt;
     const instance = basicLightbox.create(
-      `<img src="${largeImageUrl}" alt="${description}">`,
+      `<img class="modal-image" src="" alt="">`,
       {
         onShow: (instance) => {
+          const modalImage = instance.element().querySelector(".modal-image");
+          if (modalImage) {
+            modalImage.src = largeImageUrl;
+            modalImage.alt = description;
+          }
           document.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
               instance.close();
