@@ -27,3 +27,15 @@ body {
   height: 100%;
   object-fit: cover;
 }
+
+.basicLightbox {
+  background: rgba(46, 47, 66, 0.8);
+  max-height: 696px;
+}
+
+.basicLightbox__placeholder>iframe:first-child:last-child,
+.basicLightbox__placeholder>img.modal-image:first-child:last-child,
+.basicLightbox__placeholder>video:first-child:last-child {
+  max-width: 1112px;
+  max-height: 640px;
+}
